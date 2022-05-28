@@ -68,6 +68,16 @@ fi
 APP_DIR=$BUILD_DIR/app
 RACKET_DIR=$BUILD_DIR/racket
 
+RACKET_APP_NAME_PATH="$ENV_DIR/RACKET_APP_NAME"
+
+if [ ! -f "$RACKET_APP_NAME_PATH" ]; then
+  echo "     - ERROR: The RACKET_APP_NAME configuration variable does not appear to be set"
+  echo "     - Aborting..."
+  exit 1
+fi
+
+RACKET_APP_NAME=$(cat "$RACKET_APP_NAME_PATH")
+
 cd $BUILD_DIR
 
 echo "-----> Moving application into ‘app’ directory"
@@ -95,5 +105,5 @@ echo 'export PATH=$PATH:$HOME/racket/bin' >> .profile.d/setup_environment.sh
 
 echo "-----> Installing application package"
 
-raco pkg install -i --no-setup --deps search-auto -n heroku-racket-app --copy $APP_DIR |& indent
+raco pkg install -i --no-setup --deps search-auto -n "$RACKET_APP_NAME" --copy $APP_DIR |& indent
 raco setup -DK --fail-fast |& indent
