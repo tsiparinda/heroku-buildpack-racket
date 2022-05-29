@@ -1,0 +1,49 @@
+//see the buildpack https://github.com/lexi-lambda/heroku-buildpack-racket
+//for https://koyoweb.org/ see another project: https://elements.heroku.com/buildpacks/bogdanp/heroku-buildpack-racket
+
+//repo could be private!
+
+$ npm install -g heroku
+$ heroku --version
+$ heroku login
+
+//create <myrepo> at github
+
+$ cd ~/git/tsiparinda
+$ git clone <myrepo>
+
+$ cd <namerepo>
+$ touch Procfile
+$ echo "web: racket -l <nameapp>" > Procfile
+//create info.rkt
+	#lang info
+	(define version "1.0")
+	(define deps (base))
+
+$ heroku create <nameapp>
+
+// add racket buildpack
+$ heroku plugins:install buildpack-registry
+$ heroku plugins:install buildpacks
+$ heroku buildpacks:set https://github.com/tsiparinda/heroku-buildpack-racket
+$ heroku config:set RACKET_APP_NAME=<nameapp>
+$ heroku config:set RACKET_VERSION=8.4
+
+//go mod init github.com/myname/nameapp
+
+//heroku config:set PORT=8080 --?????
+
+//heroku git:remote -a <nameapp>
+$ git init
+$ git add . && git commit -m "Deploying to Heroku"
+//git push heroku master
+$ git push
+
+//go to <Deploy> tab at https://dashboard.heroku.com/apps/nameapp
+//change Deployment method to github; push button <Deploy branch>
+
+
+ 
+
+ 
+
